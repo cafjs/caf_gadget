@@ -38,7 +38,7 @@ var MyApp = {
         } else {
             console.log('Invalid app name' + p);
             AppActions.setLocalState({
-                error: 'Invalid app name ' + p
+                error: new Error('Invalid app name ' + p)
             });
         }
     },
