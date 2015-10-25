@@ -1,0 +1,138 @@
+var React = require('react');
+var rB = require('react-bootstrap');
+var AppStore = require('../stores/AppStore');
+var AppActions = require('../actions/AppActions');
+var AppStatus = require('./AppStatus');
+var NewError = require('./NewError');
+
+
+var cE = React.createElement;
+
+var MyApp = {
+    getInitialState: function() {
+        return AppStore.getState();
+    },
+    componentDidMount: function() {
+        AppStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount: function() {
+        AppStore.removeChangeListener(this._onChange);
+    },
+    _onChange : function(ev) {
+        this.setState(AppStore.getState());
+    },
+    submit: function(ev) {
+        if (ev.key === 'Enter') {
+            this.doAppNameChange(ev);
+        }
+    },
+    handleAppNameChange: function() {
+        AppActions.setLocalState({
+            appTempName: this.refs.appName.getValue()
+        });
+    },
+    doAppNameChange : function(ev) {
+        var p = this.state.appTempName && this.state.appTempName.split('-');
+        if (Array.isArray(p) && (p.length === 2)) {
+            AppActions.changeApp(this.state.appTempName);
+        } else {
+            console.log('Invalid app name' + p);
+            AppActions.setLocalState({
+                error: 'Invalid app name ' + p
+            });
+        }
+    },
+    render: function() {
+        return cE("div", {className: "container-fluid"},
+                  cE(NewError, {
+                         error: this.state.error
+                     }),
+                  cE(rB.Panel, {header: cE(rB.Grid, null,
+                                           cE(rB.Row, null,
+                                              cE(rB.Col, {sm:1, xs:1},
+                                                 cE(AppStatus, {
+                                                        isClosed:
+                                                        this.state.isClosed
+                                                    })
+                                                ),
+                                              cE(rB.Col, {
+                                                     sm: 5,
+                                                     xs:10,
+                                                     className: 'text-right'
+                                                 },
+                                                 "Register Your Gadget"
+                                                ),
+                                              cE(rB.Col, {
+                                                     sm: 5,
+                                                     xs:11,
+                                                     className: 'text-right'
+                                                 },
+                                                 this.state.fullName
+                                                )
+                                             )
+                                          )
+                               },
+                     cE(rB.Panel, {header: "Update Application in the Device"},
+                        cE(rB.Grid, null,
+                           cE(rB.Row, null,
+                              cE(rB.Col, { xs:12, sm: 6},
+                                 cE(rB.Input, {
+                                     type: 'text',
+                                     value: this.state.appTempName,
+                                     ref: 'appName',
+                                     placeholder: 'publisherName-appName',
+                                     onChange : this.handleAppNameChange,
+                                     onKeyDown: this.submit
+                                 })
+                                ),
+                              cE(rB.Col, { xs:12, sm:6},
+                                 cE(rB.Button, {onClick: this.doAppNameChange,
+                                                bsStyle: 'primary'},
+                                    'Update app')
+                                )
+                             )
+                          )
+                       ),
+                     cE(rB.Panel, {header: "Device State"},
+                        cE(rB.Grid, null,
+                           cE(rB.Row, null,
+                              cE(rB.Col, { xs:12, sm: 4},
+                                 cE('p', null, 'Current App',
+                                    cE(rB.Input, {
+                                           type: 'text', id: 'currentApp',
+                                           readOnly: 'true',
+                                           value: this.state.appName,
+                                           defaultValue: 'NONE'
+                                       })
+                                   )
+                                ),
+                              cE(rB.Col, { xs:12, sm: 4},
+                                 cE('p', null, 'Status',
+                                    cE(rB.Input, {
+                                           type: 'text', id: 'statusApp',
+                                           readOnly: 'true',
+                                           value: this.state.status,
+                                           defaultValue: 'UNKNOWN'
+                                    })
+                                   )
+                                ),
+                              cE(rB.Col, { xs:12, sm: 4},
+                                 cE('p', null, 'Token Ready?',
+                                    cE(rB.Input, {
+                                           type: 'text', id: 'tokenReady',
+                                           readOnly: 'true',
+                                           value: (this.state.token ? 'YES' :
+                                                   'NO'),
+                                           defaultValue: 'UNKNOWN'
+                                    })
+                                   )
+                                )
+                             )
+                          )
+                       )
+                    )
+                 );
+    }
+};
+
+module.exports = React.createClass(MyApp);
