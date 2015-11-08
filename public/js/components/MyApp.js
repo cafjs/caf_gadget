@@ -4,7 +4,9 @@ var AppStore = require('../stores/AppStore');
 var AppActions = require('../actions/AppActions');
 var AppStatus = require('./AppStatus');
 var NewError = require('./NewError');
-
+var ShowToken = require('./ShowToken');
+var urlParser = require('url');
+var querystring = require('querystring');
 
 var cE = React.createElement;
 
@@ -42,10 +44,26 @@ var MyApp = {
             });
         }
     },
+    doDisplayDeviceToken : function() {
+        var token = null;
+        if (window) {
+            var parsedURL = urlParser.parse(window.location.href);
+            if (parsedURL.hash && (parsedURL.hash.indexOf('#') === 0)) {
+                var hash = querystring.parse(parsedURL.hash.slice(1));
+                token = hash.token;
+            }
+        }
+        AppActions.setLocalState({
+            deviceToken : token
+        });
+    },
     render: function() {
         return cE("div", {className: "container-fluid"},
                   cE(NewError, {
                          error: this.state.error
+                     }),
+                  cE(ShowToken, {
+                         deviceToken: this.state.deviceToken
                      }),
                   cE(rB.Panel, {header: cE(rB.Grid, null,
                                            cE(rB.Row, null,
@@ -72,10 +90,23 @@ var MyApp = {
                                              )
                                           )
                                },
+                     cE(rB.Panel, {header: "Display Device Token"},
+                        cE(rB.Grid, null,
+                           cE(rB.Row, null,
+                              cE(rB.Col, {xs:12, sm:6},
+                                 cE(rB.Button, {
+                                     onClick: this.doDisplayDeviceToken,
+                                     bsStyle: 'primary'
+                                 },
+                                    'Show')
+                                )
+                             )
+                          )
+                       ),
                      cE(rB.Panel, {header: "Update Application in the Device"},
                         cE(rB.Grid, null,
                            cE(rB.Row, null,
-                              cE(rB.Col, { xs:12, sm: 6},
+                              cE(rB.Col, {xs:12, sm: 6},
                                  cE(rB.Input, {
                                      type: 'text',
                                      value: this.state.appTempName,
@@ -85,7 +116,7 @@ var MyApp = {
                                      onKeyDown: this.submit
                                  })
                                 ),
-                              cE(rB.Col, { xs:12, sm:6},
+                              cE(rB.Col, {xs:12, sm:6},
                                  cE(rB.Button, {onClick: this.doAppNameChange,
                                                 bsStyle: 'primary'},
                                     'Update app')
@@ -96,7 +127,7 @@ var MyApp = {
                      cE(rB.Panel, {header: "Device State"},
                         cE(rB.Grid, null,
                            cE(rB.Row, null,
-                              cE(rB.Col, { xs:12, sm: 4},
+                              cE(rB.Col, {xs:12, sm: 4},
                                  cE('p', null, 'Current App',
                                     cE(rB.Input, {
                                            type: 'text', id: 'currentApp',
@@ -106,7 +137,7 @@ var MyApp = {
                                        })
                                    )
                                 ),
-                              cE(rB.Col, { xs:12, sm: 4},
+                              cE(rB.Col, {xs:12, sm: 4},
                                  cE('p', null, 'Status',
                                     cE(rB.Input, {
                                            type: 'text', id: 'statusApp',
@@ -116,8 +147,8 @@ var MyApp = {
                                     })
                                    )
                                 ),
-                              cE(rB.Col, { xs:12, sm: 4},
-                                 cE('p', null, 'Token Ready?',
+                              cE(rB.Col, {xs:12, sm: 4},
+                                 cE('p', null, 'App Token Ready?',
                                     cE(rB.Input, {
                                            type: 'text', id: 'tokenReady',
                                            readOnly: 'true',
