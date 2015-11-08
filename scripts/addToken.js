@@ -23,7 +23,7 @@ var prop = function(x, defaultValue) {
 };
 
 
-var token = fs.readFileSync(path.resolve(__dirname, 'token'),
+var token = fs.readFileSync(path.resolve(__dirname, prop('token')),
                             {encoding:'utf8'}).trim();
 
 var caURL = 'https://root-gadget.cafjs.com';
