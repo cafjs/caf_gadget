@@ -7,6 +7,7 @@ var NewError = require('./NewError');
 var ShowToken = require('./ShowToken');
 var urlParser = require('url');
 var querystring = require('querystring');
+var caf_cli = require('caf_cli');
 
 var cE = React.createElement;
 
@@ -45,14 +46,8 @@ var MyApp = {
         }
     },
     doDisplayDeviceToken : function() {
-        var token = null;
-        if (window) {
-            var parsedURL = urlParser.parse(window.location.href);
-            if (parsedURL.hash && (parsedURL.hash.indexOf('#') === 0)) {
-                var hash = querystring.parse(parsedURL.hash.slice(1));
-                token = hash.token;
-            }
-        }
+        var token = (window.location.href ?
+                     caf_cli.extractTokenFromURL(window.location.href) : null);
         AppActions.setLocalState({
             deviceToken : token
         });
