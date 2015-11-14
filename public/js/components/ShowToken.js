@@ -4,27 +4,6 @@ var cE = React.createElement;
 var AppActions = require('../actions/AppActions');
 
 var ShowToken = {
-    mixins: [rB.OverlayMixin],
-
-    getInitialState : function() {
-        return {
-            isModalOpen: false
-        };
-    },
-
-    handleToggle: function(props) {
-        this.setState({
-            isModalOpen: props.deviceToken
-        });
-    },
-
-    componentWillReceiveProps: function(nextProps) {
-        this.handleToggle(nextProps);
-    },
-
-    render: function() {
-        return (cE('span',{}));
-    },
 
     doDismiss: function(ev) {
         AppActions.setLocalState({
@@ -32,29 +11,25 @@ var ShowToken = {
         });
     },
 
-  // This is called by the `OverlayMixin` when this component
-  // is mounted or updated and the return value is appended to the body.
-    renderOverlay: function() {
-        if (this.props.deviceToken) {
-            return cE(rB.Modal, React.__spread({},  this.props,
-                                               {
-                                                   bsStyle: "primary",
-                                                   title: "Device Token",
-                                                   animation: false
-                                               }),
-                      cE("div", {className: "modal-body"},
-                         cE('p', null, "Cut/paste to file '/config/token'" +
-                            " in your device"
-                           ),
-                         this.props.deviceToken
-                        ),
-                      cE("div", {className: "modal-footer"},
-                         cE(rB.Button, {onClick: this.doDismiss}, "Continue")
-                        )
-                     );
-        } else {
-            return cE('span',{});
-        }
+    render: function() {
+        return cE(rB.Modal,{show: this.props.deviceToken,
+                            onHide: this.doDismiss,
+                            animation: false},
+                  cE(rB.Modal.Header, {
+                      className : "bg-primary text-primary",
+                      closeButton: true},
+                     cE(rB.Modal.Title, null, "Device Token")
+                    ),
+                  cE(rB.ModalBody, null,
+                     cE('p', null, "Cut/paste to file '/config/token'" +
+                        " in your device"
+                       ),
+                     this.props.deviceToken
+                    ),
+                  cE(rB.Modal.Footer, null,
+                     cE(rB.Button, {onClick: this.doDismiss}, "Continue")
+                    )
+                 );
     }
 };
 
