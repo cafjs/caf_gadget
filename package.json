@@ -1,7 +1,7 @@
 {
   "name": "caf_gadget",
   "description": "CAF example to manage IoT devices",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "author": "Antonio Lain <antlai@cafjs.com>",
   "dependencies": {
       "caf_react" :"^0.2.0",

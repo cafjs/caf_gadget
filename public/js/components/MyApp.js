@@ -120,7 +120,7 @@ var MyApp = {
                           )
                        ),
                      cE(rB.Panel, {header: "Device State"},
-                        cE(rB.Grid, null,
+                        cE(rB.Grid, {fluid: true},
                            cE(rB.Row, null,
                               cE(rB.Col, {xs:12, sm: 4},
                                  cE(rB.Input, {
