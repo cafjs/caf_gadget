@@ -123,35 +123,32 @@ var MyApp = {
                         cE(rB.Grid, null,
                            cE(rB.Row, null,
                               cE(rB.Col, {xs:12, sm: 4},
-                                 cE('p', null, 'Current App',
-                                    cE(rB.Input, {
-                                           type: 'text', id: 'currentApp',
-                                           readOnly: 'true',
-                                           value: this.state.appName,
-                                           defaultValue: 'NONE'
-                                       })
-                                   )
+                                 cE(rB.Input, {
+                                     label:  'Current App',
+                                     type: 'text', id: 'currentApp',
+                                     readOnly: 'true',
+                                     value: this.state.appName,
+                                     defaultValue: 'NONE'
+                                 })
                                 ),
                               cE(rB.Col, {xs:12, sm: 4},
-                                 cE('p', null, 'Status',
-                                    cE(rB.Input, {
-                                           type: 'text', id: 'statusApp',
-                                           readOnly: 'true',
-                                           value: this.state.status,
-                                           defaultValue: 'UNKNOWN'
-                                    })
-                                   )
+                                 cE(rB.Input, {
+                                     label: 'Status',
+                                     type: 'text', id: 'statusApp',
+                                     readOnly: 'true',
+                                     value: this.state.status,
+                                     defaultValue: 'UNKNOWN'
+                                 })
                                 ),
                               cE(rB.Col, {xs:12, sm: 4},
-                                 cE('p', null, 'App Token Ready?',
-                                    cE(rB.Input, {
-                                           type: 'text', id: 'tokenReady',
-                                           readOnly: 'true',
-                                           value: (this.state.token ? 'YES' :
-                                                   'NO'),
-                                           defaultValue: 'UNKNOWN'
-                                    })
-                                   )
+                                 cE(rB.Input, {
+                                     label: 'App Token Ready?',
+                                     type: 'text', id: 'tokenReady',
+                                     readOnly: 'true',
+                                     value: (this.state.token ? 'YES' :
+                                             'NO'),
+                                     defaultValue: 'UNKNOWN'
+                                 })
                                 )
                              )
                           )
