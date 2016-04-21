@@ -24,7 +24,11 @@ var ShowToken = {
                      cE('p', null, "Cut/paste to file '/config/token'" +
                         " in your device"
                        ),
-                     this.props.deviceToken
+                     cE(rB.Input, {
+                         type:"textarea",
+                         label: "token",
+                         value:  this.props.deviceToken
+                     })
                     ),
                   cE(rB.Modal.Footer, null,
                      cE(rB.Button, {onClick: this.doDismiss}, "Continue")
