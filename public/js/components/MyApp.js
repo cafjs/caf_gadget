@@ -29,6 +29,11 @@ var MyApp = {
             this.doAppNameChange(ev);
         }
     },
+    handlePrivileged: function() {
+        AppActions.setLocalState({
+            checked: this.refs.privileged.getChecked()
+        });
+    },
     handleAppNameChange: function() {
         AppActions.setLocalState({
             appTempName: this.refs.appName.getValue()
@@ -37,7 +42,8 @@ var MyApp = {
     doAppNameChange : function(ev) {
         var p = this.state.appTempName && this.state.appTempName.split('-');
         if (Array.isArray(p) && (p.length === 2)) {
-            AppActions.changeApp(this.state.appTempName);
+            var meta = {privileged: this.state.checked || false};
+            AppActions.changeApp(this.state.appTempName, meta);
         } else {
             console.log('Invalid app name' + p);
             AppActions.setLocalState({
@@ -111,7 +117,15 @@ var MyApp = {
                                      onKeyDown: this.submit
                                  })
                                 ),
-                              cE(rB.Col, {xs:12, sm:6},
+                              cE(rB.Col, {xs:6, sm:3},
+                                 cE(rB.Input, {
+                                     type: 'checkbox',
+                                     ref: 'privileged',
+                                     checked: this.state.checked,
+                                     onClick: this.handlePrivileged
+                                 }, 'Privileged')
+                                ),
+                              cE(rB.Col, {xs:6, sm:3},
                                  cE(rB.Button, {onClick: this.doAppNameChange,
                                                 bsStyle: 'primary'},
                                     'Update app')
@@ -122,7 +136,7 @@ var MyApp = {
                      cE(rB.Panel, {header: "Device State"},
                         cE(rB.Grid, {fluid: true},
                            cE(rB.Row, null,
-                              cE(rB.Col, {xs:12, sm: 4},
+                              cE(rB.Col, {xs:12, sm: 3},
                                  cE(rB.Input, {
                                      label:  'Current App',
                                      type: 'text', id: 'currentApp',
@@ -131,7 +145,17 @@ var MyApp = {
                                      defaultValue: 'NONE'
                                  })
                                 ),
-                              cE(rB.Col, {xs:12, sm: 4},
+                              cE(rB.Col, {xs:12, sm: 3},
+                                 cE(rB.Input, {
+                                     label:  'Privileged',
+                                     type: 'text', id: 'privilege',
+                                     readOnly: 'true',
+                                     value: this.state.meta &&
+                                         this.state.meta.privileged,
+                                     defaultValue: 'false'
+                                 })
+                                ),
+                              cE(rB.Col, {xs:12, sm: 3},
                                  cE(rB.Input, {
                                      label: 'Status',
                                      type: 'text', id: 'statusApp',
@@ -140,7 +164,7 @@ var MyApp = {
                                      defaultValue: 'UNKNOWN'
                                  })
                                 ),
-                              cE(rB.Col, {xs:12, sm: 4},
+                              cE(rB.Col, {xs:12, sm: 3},
                                  cE(rB.Input, {
                                      label: 'App Token Ready?',
                                      type: 'text', id: 'tokenReady',
