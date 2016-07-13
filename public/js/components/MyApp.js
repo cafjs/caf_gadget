@@ -5,6 +5,7 @@ var AppActions = require('../actions/AppActions');
 var AppStatus = require('./AppStatus');
 var NewError = require('./NewError');
 var ShowToken = require('./ShowToken');
+var PropertyEditor = require('./PropertyEditor');
 var urlParser = require('url');
 var querystring = require('querystring');
 var caf_cli = require('caf_cli');
@@ -42,7 +43,10 @@ var MyApp = {
     doAppNameChange : function(ev) {
         var p = this.state.appTempName && this.state.appTempName.split('-');
         if (Array.isArray(p) && (p.length === 2)) {
-            var meta = {privileged: this.state.checked || false};
+            var meta = {
+                privileged: this.state.checked || false,
+                properties: this.state.tempProperties
+            };
             AppActions.changeApp(this.state.appTempName, meta);
         } else {
             console.log('Invalid app name' + p);
@@ -58,14 +62,22 @@ var MyApp = {
             deviceToken : token
         });
     },
+    doDisplayPropertyEditor: function() {
+         AppActions.setLocalState({
+             devicePropertyEditor : {}
+        });
+    },
     render: function() {
         return cE("div", {className: "container-fluid"},
                   cE(NewError, {
-                         error: this.state.error
-                     }),
+                      error: this.state.error
+                  }),
                   cE(ShowToken, {
-                         deviceToken: this.state.deviceToken
-                     }),
+                      deviceToken: this.state.deviceToken
+                  }),
+                  cE(PropertyEditor, {
+                      devicePropertyEditor: this.state.devicePropertyEditor
+                  }),
                   cE(rB.Panel, {header: cE(rB.Grid, null,
                                            cE(rB.Row, null,
                                               cE(rB.Col, {sm:1, xs:1},
@@ -107,7 +119,7 @@ var MyApp = {
                      cE(rB.Panel, {header: "Update Application in the Device"},
                         cE(rB.Grid, null,
                            cE(rB.Row, null,
-                              cE(rB.Col, {xs:12, sm: 6},
+                              cE(rB.Col, {xs:12, sm: 4},
                                  cE(rB.Input, {
                                      type: 'text',
                                      value: this.state.appTempName,
@@ -117,7 +129,7 @@ var MyApp = {
                                      onKeyDown: this.submit
                                  })
                                 ),
-                              cE(rB.Col, {xs:6, sm:3},
+                              cE(rB.Col, {xs:12, sm:2},
                                  cE(rB.Input, {
                                      type: 'checkbox',
                                      ref: 'privileged',
@@ -125,10 +137,26 @@ var MyApp = {
                                      onClick: this.handlePrivileged
                                  }, 'Privileged')
                                 ),
-                              cE(rB.Col, {xs:6, sm:3},
+                              cE(rB.Col, {xs:12, sm:3},
+                                 cE(rB.Button, {
+                                  onClick: this.doDisplayPropertyEditor,
+                                  bsStyle: 'primary'
+                                 }, 'Edit properties')
+                                ),
+                              cE(rB.Col, {xs:12, sm:3},
                                  cE(rB.Button, {onClick: this.doAppNameChange,
-                                                bsStyle: 'primary'},
+                                                bsStyle: 'danger'},
                                     'Update app')
+                                )
+                             ),
+                           cE(rB.Row, null,
+                              cE(rB.Col, {xs:12, sm: 12},
+                                 cE(rB.Input, {
+                                     type:"textarea",
+//                                     label: "Properties",
+                                     readOnly: 'true',
+                                     value:  this.state.tempProperties || "{}"
+                                 })
                                 )
                              )
                           )
@@ -174,7 +202,18 @@ var MyApp = {
                                      defaultValue: 'UNKNOWN'
                                  })
                                 )
-                             )
+                             ),
+                            cE(rB.Row, null,
+                               cE(rB.Col, {xs:12, sm: 12},
+                                  cE(rB.Input, {
+                                      type:"textarea",
+                                      label: "Properties",
+                                      readOnly: 'true',
+                                      value:  this.state.meta &&
+                                          this.state.meta.properties
+                                  })
+                                 )
+                              )
                           )
                        )
                     )
