@@ -124,11 +124,13 @@ var PropertyEditor = {
                                placeholder: 'Value'
                            })
                           ),
-                        cE(rB.Col, {sm:3, xs:6},
-                           cE(rB.Button, {onClick: this.doAddProperty,
-                                          bsStyle: 'primary'}, "Add"),
-                           cE(rB.Button, {onClick: this.doDeleteProperty,
-                                          bsStyle: 'danger'}, "Delete")
+                        cE(rB.Col, {sm:6, xs:6},
+                           cE(rB.ButtonToolbar, {},
+                              cE(rB.Button, {onClick: this.doAddProperty,
+                                             bsStyle: 'primary'}, "Add"),
+                              cE(rB.Button, {onClick: this.doDeleteProperty,
+                                             bsStyle: 'danger'}, "Delete")
+                             )
                           )
                        ),
                      cE(rB.Row, null,
@@ -143,8 +145,10 @@ var PropertyEditor = {
                        )
                     ),
                   cE(rB.Modal.Footer, null,
-                     cE(rB.Button, {onClick: this.doUpdate}, "Update"),
-                     cE(rB.Button, {onClick: this.doDismiss}, "Cancel")
+                     cE(rB.ButtonToolbar, {},
+                        cE(rB.Button, {onClick: this.doUpdate}, "Update"),
+                        cE(rB.Button, {onClick: this.doDismiss}, "Cancel")
+                       )
                     )
                  );
     }

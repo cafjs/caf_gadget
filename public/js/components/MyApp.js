@@ -137,16 +137,17 @@ var MyApp = {
                                      onClick: this.handlePrivileged
                                  }, 'Privileged')
                                 ),
-                              cE(rB.Col, {xs:12, sm:3},
-                                 cE(rB.Button, {
-                                  onClick: this.doDisplayPropertyEditor,
-                                  bsStyle: 'primary'
-                                 }, 'Edit properties')
-                                ),
-                              cE(rB.Col, {xs:12, sm:3},
-                                 cE(rB.Button, {onClick: this.doAppNameChange,
-                                                bsStyle: 'danger'},
-                                    'Update app')
+                              cE(rB.Col, {xs:12, sm:6},
+                                 cE(rB.ButtonToolbar, {},
+                                    cE(rB.Button, {
+                                        onClick: this.doDisplayPropertyEditor,
+                                        bsStyle: 'primary'
+                                    }, 'Edit properties'),
+                                    cE(rB.Button, {
+                                        onClick: this.doAppNameChange,
+                                        bsStyle: 'danger'
+                                    }, 'Update app')
+                                   )
                                 )
                              ),
                            cE(rB.Row, null,
