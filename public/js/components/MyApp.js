@@ -78,7 +78,7 @@ var MyApp = {
                   cE(PropertyEditor, {
                       devicePropertyEditor: this.state.devicePropertyEditor
                   }),
-                  cE(rB.Panel, {header: cE(rB.Grid, null,
+                  cE(rB.Panel, {header: cE(rB.Grid, {fluid: true},
                                            cE(rB.Row, null,
                                               cE(rB.Col, {sm:1, xs:1},
                                                  cE(AppStatus, {
@@ -104,7 +104,7 @@ var MyApp = {
                                           )
                                },
                      cE(rB.Panel, {header: "Display Device Token"},
-                        cE(rB.Grid, null,
+                        cE(rB.Grid, {fluid: true},
                            cE(rB.Row, null,
                               cE(rB.Col, {xs:12, sm:6},
                                  cE(rB.Button, {
@@ -117,7 +117,7 @@ var MyApp = {
                           )
                        ),
                      cE(rB.Panel, {header: "Update Application in the Device"},
-                        cE(rB.Grid, null,
+                        cE(rB.Grid, {fluid: true},
                            cE(rB.Row, null,
                               cE(rB.Col, {xs:12, sm: 4},
                                  cE(rB.Input, {
