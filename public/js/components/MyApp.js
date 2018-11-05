@@ -103,33 +103,21 @@ var MyApp = {
                                              )
                                           )
                                },
-                     cE(rB.Panel, {header: "Display Device Token"},
+                     cE(rB.Panel, {header: "Update Device Application"},
                         cE(rB.Grid, {fluid: true},
-                           cE(rB.Row, null,
-                              cE(rB.Col, {xs:12, sm:6},
-                                 cE(rB.Button, {
-                                     onClick: this.doDisplayDeviceToken,
-                                     bsStyle: 'primary'
-                                 },
-                                    'Show')
-                                )
-                             )
-                          )
-                       ),
-                     cE(rB.Panel, {header: "Update Application in the Device"},
-                        cE(rB.Grid, {fluid: true},
-                           cE(rB.Row, null,
-                              cE(rB.Col, {xs:12, sm: 4},
+                           cE(rB.Row, {className: 'row-center-align'},
+                              cE(rB.Col, {xs:6, sm: 8},
                                  cE(rB.Input, {
                                      type: 'text',
+                                     label: "Application",
                                      value: this.state.appTempName,
                                      ref: 'appName',
-                                     placeholder: 'publisherName-appName',
+                                     placeholder: 'publisher-app',
                                      onChange : this.handleAppNameChange,
                                      onKeyDown: this.submit
                                  })
                                 ),
-                              cE(rB.Col, {xs:12, sm:2},
+                              cE(rB.Col, {xs:3, sm:2},
                                  cE(rB.Input, {
                                      type: 'checkbox',
                                      ref: 'privileged',
@@ -137,27 +125,27 @@ var MyApp = {
                                      onClick: this.handlePrivileged
                                  }, 'Privileged')
                                 ),
-                              cE(rB.Col, {xs:12, sm:6},
-                                 cE(rB.ButtonToolbar, {},
-                                    cE(rB.Button, {
-                                        onClick: this.doDisplayPropertyEditor,
-                                        bsStyle: 'primary'
-                                    }, 'Edit properties'),
-                                    cE(rB.Button, {
-                                        onClick: this.doAppNameChange,
-                                        bsStyle: 'danger'
-                                    }, 'Update app')
-                                   )
+                              cE(rB.Col, {xs:3, sm:2},
+                                 cE(rB.Button, {
+                                     onClick: this.doAppNameChange,
+                                     bsStyle: 'danger'
+                                 }, 'Update')
                                 )
                              ),
-                           cE(rB.Row, null,
-                              cE(rB.Col, {xs:12, sm: 12},
+                           cE(rB.Row, {className: 'row-center-align'},
+                              cE(rB.Col, {xs:9, sm: 10},
                                  cE(rB.Input, {
                                      type:"textarea",
-//                                     label: "Properties",
+                                     label: "Properties",
                                      readOnly: 'true',
                                      value:  this.state.tempProperties || "{}"
                                  })
+                                ),
+                              cE(rB.Col, {xs:3, sm: 2},
+                                 cE(rB.Button, {
+                                     onClick: this.doDisplayPropertyEditor,
+                                     bsStyle: 'primary'
+                                 }, 'Edit')
                                 )
                              )
                           )
@@ -215,6 +203,18 @@ var MyApp = {
                                   })
                                  )
                               )
+                          )
+                       ),
+                     cE(rB.Panel, {header: "Display Device Token"},
+                        cE(rB.Grid, {fluid: true},
+                           cE(rB.Row, null,
+                              cE(rB.Col, {xs:12, sm:6},
+                                 cE(rB.Button, {
+                                     onClick: this.doDisplayDeviceToken,
+                                     bsStyle: 'primary'
+                                 }, 'Show')
+                                )
+                             )
                           )
                        )
                     )
