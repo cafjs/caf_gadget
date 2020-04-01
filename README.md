@@ -1,9 +1,11 @@
-# CAF (Cloud Assistant Framework)
+# Caf.js
 
-Co-design permanent, active, stateful, reliable cloud proxies with your web app.
+Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.
 
-See http://www.cafjs.com 
+See https://www.cafjs.com
 
-## CAF application to register IoT devices  
+## Application to Register IoT Devices
 
+In order to manage a device, we need to create first a CA in this app with matching name.
 
+See `caf_rpi/README.md` for how to on-board a Raspberry Pi.
