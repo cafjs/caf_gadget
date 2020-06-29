@@ -55,6 +55,9 @@ var MyApp = {
             });
         }
     },
+    doReset: function(ev) {
+        AppActions.changeApp(null, {privileged: false, properties: "{}"});
+    },
     doDisplayDeviceToken : function() {
         var token = (window.location.href ?
                      caf_cli.extractTokenFromURL(window.location.href) : null);
@@ -106,7 +109,7 @@ var MyApp = {
                      cE(rB.Panel, {header: "Update Device Application"},
                         cE(rB.Grid, {fluid: true},
                            cE(rB.Row, {className: 'row-center-align'},
-                              cE(rB.Col, {xs:6, sm: 8},
+                              cE(rB.Col, {xs:9, sm: 10},
                                  cE(rB.Input, {
                                      type: 'text',
                                      label: "Application",
@@ -124,15 +127,9 @@ var MyApp = {
                                      checked: this.state.checked,
                                      onClick: this.handlePrivileged
                                  }, 'Privileged')
-                                ),
-                              cE(rB.Col, {xs:3, sm:2},
-                                 cE(rB.Button, {
-                                     onClick: this.doAppNameChange,
-                                     bsStyle: 'danger'
-                                 }, 'Update')
                                 )
                              ),
-                           cE(rB.Row, {className: 'row-center-align'},
+                           cE(rB.Row, {className: 'row-center-align-extra'},
                               cE(rB.Col, {xs:9, sm: 10},
                                  cE(rB.Input, {
                                      type:"textarea",
@@ -146,6 +143,20 @@ var MyApp = {
                                      onClick: this.doDisplayPropertyEditor,
                                      bsStyle: 'primary'
                                  }, 'Edit')
+                                )
+                             ),
+                           cE(rB.Row, {className: 'row-center-align'},
+                              cE(rB.Col, {xs:9, sm:8},
+                                 cE(rB.ButtonGroup, null,
+                                     cE(rB.Button, {
+                                         onClick: this.doAppNameChange,
+                                         bsStyle: 'primary'
+                                     }, 'Update'),
+                                    cE(rB.Button, {
+                                        onClick: this.doReset,
+                                        bsStyle: 'danger'
+                                    }, 'Reset')
+                                   )
                                 )
                              )
                           )
