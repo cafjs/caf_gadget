@@ -3,7 +3,7 @@ var rB = require('react-bootstrap');
 var AppStore = require('../stores/AppStore');
 var AppActions = require('../actions/AppActions');
 var AppStatus = require('./AppStatus');
-var NewError = require('./NewError');
+var DisplayError = require('./DisplayError');
 var ShowToken = require('./ShowToken');
 var PropertyEditor = require('./PropertyEditor');
 var urlParser = require('url');
@@ -72,7 +72,7 @@ var MyApp = {
     },
     render: function() {
         return cE("div", {className: "container-fluid"},
-                  cE(NewError, {
+                  cE(DisplayError, {
                       error: this.state.error
                   }),
                   cE(ShowToken, {

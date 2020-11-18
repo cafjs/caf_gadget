@@ -1,95 +1,92 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var AppConstants = require('../constants/AppConstants');
-var AppSession = require('../session/AppSession');
-var json_rpc = require('caf_transport').json_rpc;
+"use strict";
 
-var updateF = function(state) {
-    var d = {
-        actionType: AppConstants.APP_UPDATE,
+const AppConstants = require('../constants/AppConstants');
+const json_rpc = require('caf_transport').json_rpc;
+const caf_cli =  require('caf_cli');
+
+
+const updateF = function(store, state) {
+    const d = {
+        type: AppConstants.APP_UPDATE,
         state: state
     };
-    AppDispatcher.dispatch(d);
+    store.dispatch(d);
 };
 
-
-var errorF =  function(err) {
-    var d = {
-        actionType: AppConstants.APP_ERROR,
+const errorF =  function(store, err) {
+    const d = {
+        type: AppConstants.APP_ERROR,
         error: err
     };
-    AppDispatcher.dispatch(d);
+    store.dispatch(d);
 };
 
-var getNotifData = function(msg) {
+const getNotifData = function(msg) {
     return json_rpc.getMethodArgs(msg)[0];
 };
 
-var notifyF = function(message) {
-    var d = {
-        actionType: AppConstants.APP_NOTIFICATION,
+const notifyF = function(store, message) {
+    const d = {
+        type: AppConstants.APP_NOTIFICATION,
         state: getNotifData(message)
     };
-    AppDispatcher.dispatch(d);
+    store.dispatch(d);
 };
 
-var wsStatusF =  function(isClosed) {
-    var d = {
-        actionType: AppConstants.WS_STATUS,
+const wsStatusF =  function(store, isClosed) {
+    const d = {
+        type: AppConstants.WS_STATUS,
         isClosed: isClosed
     };
-    AppDispatcher.dispatch(d);
+    store.dispatch(d);
 };
 
-var AppActions = {
-    initServer: function(initialData) {
-        updateF(initialData);
+const AppActions = {
+    initServer(ctx, initialData) {
+        updateF(ctx.store, initialData);
     },
-    init: function(cb) {
-        AppSession.hello(AppSession.getCacheKey(),
-                         function(err, data) {
-                             if (err) {
-                                 errorF(err);
-                             } else {
-                                 updateF(data);
-                             }
-                             cb(err, data);
-                         });
+    async init(ctx) {
+        try {
+            const data = await ctx.session.hello(ctx.session.getCacheKey())
+                .getPromise();
+            updateF(ctx.store, data);
+        } catch (err) {
+            errorF(ctx.store, err);
+        }
     },
-    setLocalState: function(data) {
-        updateF(data);
+    message(ctx, msg) {
+        console.log(msg);
+        AppActions.getState(ctx);
+//        notifyF(ctx.store, msg);
     },
-    resetError: function() {
-        errorF(null);
+    closing(ctx, err) {
+        console.log('Closing:' + JSON.stringify(err));
+        wsStatusF(ctx.store, true);
+    },
+    setLocalState(ctx, data) {
+        updateF(ctx.store, data);
+    },
+    resetError(ctx) {
+        errorF(ctx.store, null);
+    },
+    setError(ctx, err) {
+        errorF(ctx.store, err);
     }
-
 };
 
-['getState', 'changeApp']
-    .forEach(function(x) {
-        AppActions[x] = function() {
-            var args = Array.prototype.slice.call(arguments);
-            args.push(function(err, data) {
-                if (err) {
-                    errorF(err);
-                } else {
-                    updateF(data);
-                }
-            });
-            AppSession[x].apply(AppSession, args);
-        };
-    });
 
-
-AppSession.onmessage = function(msg) {
-    console.log('message:' + JSON.stringify(msg));
-    AppActions.getState();
-    //notifyF(msg);
-};
-
-AppSession.onclose = function(err) {
-    console.log('Closing:' + JSON.stringify(err));
-    wsStatusF(true);
-};
-
+['getState', 'changeApp'].forEach(function(x) {
+    AppActions[x] = async function() {
+        const args = Array.prototype.slice.call(arguments);
+        const ctx = args.shift();
+         try {
+             const data = await ctx.session[x].apply(ctx.session, args)
+                 .getPromise();
+             updateF(ctx.store, data);
+         } catch (err) {
+             errorF(ctx.store, err);
+         }
+    };
+});
 
 module.exports = AppActions;
