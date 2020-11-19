@@ -1,3 +1,5 @@
+'use strict';
+
 const React = require('react');
 const rB = require('react-bootstrap');
 const cE = React.createElement;
@@ -16,7 +18,7 @@ class ShowToken extends React.Component {
         });
     }
 
-    render: function() {
+    render() {
         return cE(rB.Modal, {show: !!this.props.deviceToken,
                              onHide: this.doDismiss,
                              animation: false},

@@ -4,8 +4,10 @@ const AppReducer = function(state, action) {
     if (typeof state === 'undefined') {
         return  {
             isClosed: false, fullName: '',
-            error: null, deviceToken: null
-
+            error: null, deviceToken: null, meta: {privileged: true,
+                                                   properties: ''},
+            appName: '', status: '',
+            token: null
         };
     } else {
         switch(action.type) {
