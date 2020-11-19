@@ -7,7 +7,7 @@ const DisplayError = require('./DisplayError');
 const ShowToken = require('./ShowToken');
 const ShowDevice = require('./ShowDevice');
 const UpdateDevice = require('./UpdateDevice');
-
+const WarnPrivileged = require('./WarnPrivileged');
 const cE = React.createElement;
 
 class MyApp extends React.Component {
@@ -47,6 +47,10 @@ class MyApp extends React.Component {
                       ctx: this.props.ctx,
                       deviceToken: this.state.deviceToken
                   }),
+                  cE(WarnPrivileged, {
+                      ctx: this.props.ctx,
+                      warnPrivileged: this.state.warnPrivileged
+                  }),
                   cE(rB.Panel, null,
                      cE(rB.Panel.Heading, null,
                         cE(rB.Panel.Title, null,
@@ -79,7 +83,9 @@ class MyApp extends React.Component {
                            cE(rB.Panel.Body, null,
                               cE(UpdateDevice, {
                                   ctx: this.props.ctx,
-
+                                  newAppName: this.state.newAppName,
+                                  newProperties: this.state.newProperties,
+                                  newPrivileged: this.state.newPrivileged
                               })
                              )
                           ),
@@ -90,6 +96,7 @@ class MyApp extends React.Component {
                            cE(rB.Panel.Body, null,
                               cE(ShowDevice, {
                                   ctx: this.props.ctx,
+                                  fullName: this.state.fullName,
                                   appName: this.state.appName,
                                   privileged: this.state.meta &&
                                       this.state.meta.privileged,

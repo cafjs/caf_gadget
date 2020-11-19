@@ -7,7 +7,8 @@ const AppReducer = function(state, action) {
             error: null, deviceToken: null, meta: {privileged: true,
                                                    properties: ''},
             appName: '', status: '',
-            token: null
+            newAppName: '', newPrivileged: true, newProperties: '',
+            token: null, warnPrivileged: false
         };
     } else {
         switch(action.type) {
