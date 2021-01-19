@@ -6,6 +6,10 @@ const cE = React.createElement;
 
 const MESSAGE = 'Using the menu in the top left corner, create a CA for this ' +
       'app with a name similar to the device name, i.e., ';
+
+const MESSAGE2 = '. If this CA was already created, just switch to it to ' +
+      'force a token update.';
+
 class ShowDevice extends React.Component {
 
     constructor(props) {
@@ -53,7 +57,7 @@ class ShowDevice extends React.Component {
                                      xs: 6, key: 32}, 'Warning: No token'),
                          cE(rB.Col, {sm: 9, xs: 12, key:76},
                             cE(rB.FormControl.Static, null, MESSAGE +
-                               fullName(this.props.appName))
+                               fullName(this.props.appName) + MESSAGE2)
                            )
                      ] :
                      []
